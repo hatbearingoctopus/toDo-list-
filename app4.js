@@ -1,27 +1,17 @@
-const todos = [{
-  text: 'Practice coding',
-  completed: true
-},
-{
-  text: 'Do splits stretching',
-  completed: false
-},
-{
-  text: 'Shear rabbits for summer',
-  completed: false
-},
-{
-  text: 'Clean chicken coop',
-  completed: false
-},
-{
-  text: 'Take Alice to swim lessons',
-  completed: true
-}]
+
+let todos = []
 
 const filters = {
   searchText: '',
   hideCompleted: false
+}
+
+//Check for existing saved data
+const todosJSON = localStorage.getItem('todos') 
+
+//check if any data is in there. Use and parse any data
+if (todosJSON !== null) {
+  todos = JSON.parse(todosJSON)
 }
 
 //figures out which todo matches the filter
@@ -69,10 +59,13 @@ document.querySelector('#search-text').addEventListener('input', function (e) {
 //event listener for the submit, pushes entered todo to todos array, prevents default, re-renders todos with current filters and removes previously entered item on submit
 document.querySelector('#new-todo').addEventListener('submit', function (e) {
   e.preventDefault()
+
   todos.push({
     text: e.target.elements.text.value,
     completed: false
   })
+  localStorage.setItem('todos', JSON.stringify(todos))
+
   renderTodos(todos, filters)
   e.target.elements.text.value = ''
 })
@@ -82,6 +75,4 @@ document.querySelector('#hide-completed').addEventListener('change', function (e
   filters.hideCompleted = e.target.checked
   renderTodos(todos, filters)
 })
-
-
  
